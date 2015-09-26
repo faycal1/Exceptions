@@ -15,16 +15,16 @@ class TeamTest extends \PHPUnit_Framework_TestCase
     /** @test */
     function a_team_has_a_name_and_a_size()
     {    	
-    	 $team = new Team('Acme' , 5);
+    	 $team = $this->newTeam();
     	 $this->assertEquals('Acme', $team->name(), 'cest pas egal');
-    	 $this->assertEquals(5, $team->size(), 'no no no NO');
+    	 $this->assertEquals(2, $team->size(), 'no no no NO');
 
     }
 
     /** @test */
     function a_team_can_add_a_user ()
     {
-    	$team = new team('Acme' , 5) ;
+    	$team = $this->newTeam() ;
     	$team->add(new User('Faycal')) ;
 
     	$this->assertCount(1, $team->members(), 'Quelque chose va mal , trés mal');
@@ -33,13 +33,12 @@ class TeamTest extends \PHPUnit_Framework_TestCase
     /** @test */
     function a_team_can_add_multiple_users_at_once ()
     {
-    	$team = new Team('Acme' , 5) ;
+    	$team = $this->newTeam() ;
     	$team->addMany([
     		new user('Jordan'),
-    		new User('Fox'),
-    		new User('Bellicimo')
+    		new User('Fox')
     		]);
-    	$this->assertCount(3,$team->members(), 'Not The right count');
+    	$this->assertCount(2,$team->members(), 'Not The right count');
 
     } 
 
@@ -50,9 +49,7 @@ class TeamTest extends \PHPUnit_Framework_TestCase
     */
     function it_does_not_allow_new_members_once_the_maximum_size_has_been_reached()
     {
-    	$team= new Team('Acme' , 2) ;
-
-    	$team->addMany([
+    	$team= $this->newTeam()->addMany([
 
     			new User('bb'),
     			new User('cc'),
@@ -60,6 +57,11 @@ class TeamTest extends \PHPUnit_Framework_TestCase
 
     		]) ;
 
-    	$this->assertCount(2, $team->members(), 'The Bad Behavour');
+    	//$this->assertCount(2, $team->members(), 'The Bad Behavour');
     } 
+
+    protected function newTeam($name='Acme' ,  $size=2)
+    {
+        return new Team($name , $size);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App ;
 
 use App\Exceptions\TeamIsFull;
+use App\Exceptions\UserAlreadyOnTeam;
 use App\User;
 
 class Team 
@@ -44,8 +45,14 @@ class Team
     		throw new TeamIsFull;    		
     	}
 
+        if ($user->isOnTeam()) {
+            throw new UserAlreadyOnTeam ;
+        }
+
     	$this->users[] =  $user; 
     } 
+
+
 
     protected  function atCapacity()
     {

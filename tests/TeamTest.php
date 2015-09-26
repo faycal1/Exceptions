@@ -26,7 +26,6 @@ class TeamTest extends \PHPUnit_Framework_TestCase
     {
     	$team = $this->newTeam() ;
     	$team->add(new User('Faycal')) ;
-
     	$this->assertCount(1, $team->members(), 'Quelque chose va mal , trés mal');
     } 
 
@@ -57,8 +56,23 @@ class TeamTest extends \PHPUnit_Framework_TestCase
 
     		]) ;
 
-    	//$this->assertCount(2, $team->members(), 'The Bad Behavour');
+    	$this->assertCount(3, $team->members(), 'The Bad Behavour');
     } 
+
+    /** 
+    * @test
+    * 
+    * @exepectedException \App\Exceptions\UserAlreadyOnTeam
+    */
+
+    public function a_user_may_not_join_a_team_if_they_are_already_on_once()
+    {
+        $user = new User('Bill');
+        $user->joinTeam($this->newTeam()) ;
+
+        $james = new User('james');
+        $this->newTeam('New Team')->add($james);
+    }
 
     protected function newTeam($name='Acme' ,  $size=2)
     {
